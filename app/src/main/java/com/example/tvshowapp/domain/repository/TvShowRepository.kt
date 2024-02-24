@@ -8,4 +8,6 @@ interface TvShowRepository {
 
     suspend fun getTvShows(): TvShowDto
 
+    suspend fun getTvShowsSearch(searchQuery:String): TvShowDto
+
 }

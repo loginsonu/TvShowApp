@@ -70,18 +70,24 @@ fun TvShowListItem(
                     .fillMaxWidth()
                     .height(200.dp)
                 ,
-                painter = rememberAsyncImagePainter(Constants.BASE_IMAGE_URL+tvShow.posterPath),
+                painter = if(tvShow.posterPath.isNotEmpty())
+                    rememberAsyncImagePainter(Constants.BASE_IMAGE_URL+tvShow.posterPath)
+                else
+                    painterResource(id = R.drawable.no_image_found)
+                ,
                 contentDescription ="image",
                 contentScale = ContentScale.FillBounds
             )
 
             Text(
-                modifier = Modifier.constrainAs(name){
-                    top.linkTo(image.bottom,5.dp)
-                    start.linkTo(image.start,2.dp)
-                    bottom.linkTo(parent.bottom)
-                }
-                    .wrapContentSize().padding(1.dp)
+                modifier = Modifier
+                    .constrainAs(name) {
+                        top.linkTo(image.bottom, 5.dp)
+                        start.linkTo(image.start, 2.dp)
+                        bottom.linkTo(parent.bottom)
+                    }
+                    .wrapContentSize()
+                    .padding(1.dp)
                 ,
                 text = tvShow.name,
                 style = TextStyle(fontSize = 12.sp, textAlign = TextAlign.Start)

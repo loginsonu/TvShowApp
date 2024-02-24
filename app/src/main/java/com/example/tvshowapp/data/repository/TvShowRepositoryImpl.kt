@@ -14,5 +14,9 @@ class TvShowRepositoryImpl @Inject constructor(
         return api.getTvShows()
     }
 
+    override suspend fun getTvShowsSearch(searchQuery: String): TvShowDto {
+        return api.getTvShowsSearch(searchQuery)
+    }
+
 
 }
