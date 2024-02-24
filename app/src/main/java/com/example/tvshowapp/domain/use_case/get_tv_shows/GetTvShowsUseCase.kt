@@ -1,7 +1,7 @@
 package com.example.tvshowapp.domain.use_case.get_tv_shows
 
 import com.example.tvshowapp.common.Resource
-import com.example.tvshowapp.data.remote.dto.toTvShowList
+import com.example.tvshowapp.data.remote.dto.tv_show_dto.toTvShowList
 import com.example.tvshowapp.domain.model.TvShow
 import com.example.tvshowapp.domain.repository.TvShowRepository
 import kotlinx.coroutines.Dispatchers

@@ -1,4 +1,4 @@
-package com.example.tvshowapp.data.remote.dto
+package com.example.tvshowapp.data.remote.dto.tv_show_dto
 
 import com.google.gson.annotations.SerializedName
 

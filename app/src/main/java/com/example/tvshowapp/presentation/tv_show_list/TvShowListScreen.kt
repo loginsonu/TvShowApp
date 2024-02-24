@@ -87,7 +87,7 @@ fun TvShowListScreen(
                     TvShowListItem(
                         tvShow = tvShow
                     ){
-
+                        navController.navigate(Screen.TvShowDetailScreen.route + "/${tvShow.id}")
                     }
                 }
             }

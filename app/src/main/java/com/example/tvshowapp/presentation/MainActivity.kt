@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.tvshowapp.presentation.tv_show_list.TvShowListScreen
+import com.example.tvshowapp.presentation.tv_show_list_details.TvShowDetailScreen
 import com.example.tvshowapp.presentation.ui.theme.TVShowAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -48,10 +49,10 @@ fun TvShowApp(){
         ) {
             TvShowListScreen(navController)
         }
-//        composable(
-//            route = Screen.CoinDetailScreen.route + "/{coinId}"
-//        ) {
-//            CoinDetailScreen()
-//        }
+        composable(
+            route = Screen.TvShowDetailScreen.route + "/{id}"
+        ) {
+            TvShowDetailScreen(navController)
+        }
     }
 }

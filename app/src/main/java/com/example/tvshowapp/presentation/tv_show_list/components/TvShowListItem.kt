@@ -1,6 +1,7 @@
 package com.example.tvshowapp.presentation.tv_show_list.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -46,7 +48,9 @@ fun TvShowListItem(
         modifier = Modifier
             .fillMaxWidth()
             .height(250.dp)
-            .padding(5.dp),
+            .padding(5.dp)
+            .clickable { onItemClick(tvShow) }
+        ,
         shape = RoundedCornerShape(3.dp),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 5.dp
@@ -84,6 +88,7 @@ fun TvShowListItem(
                     .constrainAs(name) {
                         top.linkTo(image.bottom, 5.dp)
                         start.linkTo(image.start, 2.dp)
+                        end.linkTo(parent.end,2.dp)
                         bottom.linkTo(parent.bottom)
                     }
                     .wrapContentSize()
@@ -95,12 +100,13 @@ fun TvShowListItem(
 
             Image(
                 modifier = Modifier.constrainAs(fav){
-                    top.linkTo(name.top)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(name.bottom)
+                    top.linkTo(image.top,2.dp)
+                    end.linkTo(parent.end,2.dp)
                 },
                 painter = painterResource(id = R.drawable.baseline_stars_24),
-                contentDescription = "Fav")
+                contentDescription = "Fav",
+                colorFilter = ColorFilter.tint(Color.Green)
+            )
 
         }
     }
