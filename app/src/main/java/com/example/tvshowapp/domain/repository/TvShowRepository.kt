@@ -12,4 +12,6 @@ interface TvShowRepository {
 
     suspend fun getTvShowDetails(id:Int):DetailsTvShowDto
 
+    suspend fun getSimilarTvShows(id:Int):TvShowDto
+
 }

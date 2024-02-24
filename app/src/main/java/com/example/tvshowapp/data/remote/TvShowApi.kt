@@ -22,4 +22,8 @@ interface TvShowApi {
 
     @GET("/3/tv/{id}?language=en-US")
     suspend fun getTVShowDetails(@Path("id") id: Int): DetailsTvShowDto
+
+
+    @GET("/3/tv/{id}/similar?language=en-US&page=1")
+    suspend fun getSimilarShows(@Path("id") id: Int): TvShowDto
 }

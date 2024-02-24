@@ -23,5 +23,9 @@ class TvShowRepositoryImpl @Inject constructor(
         return  api.getTVShowDetails(id)
     }
 
+    override suspend fun getSimilarTvShows(id: Int): TvShowDto {
+        return api.getSimilarShows(id)
+    }
+
 
 }

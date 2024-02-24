@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -40,6 +41,10 @@ import com.example.tvshowapp.R
 import com.example.tvshowapp.common.Constants
 import com.example.tvshowapp.presentation.Screen
 import com.example.tvshowapp.presentation.tv_show_list.TvShowListViewModel
+import com.example.tvshowapp.presentation.tv_show_list_details.components.SimilarItem
+import com.google.gson.Gson
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,6 +54,7 @@ fun TvShowDetailScreen(
     viewModel: TvShowDetailsViewModel = hiltViewModel()
 ){
     val state = viewModel.state.value
+    val similarState = viewModel.stateSimilar.value
 
     Scaffold(
         topBar = {
@@ -81,90 +87,112 @@ fun TvShowDetailScreen(
         }
     ) { padding->
         Box(modifier = Modifier.fillMaxSize().padding(padding)){
-            state.tvShowsDetails?.let { tvShow->
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
-                    item {
-                        Image(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(300.dp)
-                            ,
-                            painter = if(tvShow.posterPath.isNotEmpty())
-                                rememberAsyncImagePainter(Constants.BASE_IMAGE_URL+tvShow.posterPath)
-                            else
-                                painterResource(id = R.drawable.no_image_found)
-                            ,
-                            contentDescription ="image",
-                            contentScale = ContentScale.FillBounds
-                        )
-                    }
+                    state.tvShowsDetails?.let {tvShow->
+                        item {
+                            Image(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(300.dp)
+                                ,
+                                painter = if(tvShow.posterPath.isNotEmpty())
+                                    rememberAsyncImagePainter(Constants.BASE_IMAGE_URL+tvShow.posterPath)
+                                else
+                                    painterResource(id = R.drawable.no_image_found)
+                                ,
+                                contentDescription ="image",
+                                contentScale = ContentScale.FillBounds
+                            )
+                        }
 
-                    if (tvShow.overview.isNotEmpty()) {
+                        if (tvShow.overview.isNotEmpty()) {
+                            item {
+                                Text(
+                                    text = stringResource(id = R.string.descriptions),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(start = 10.dp, end = 10.dp, top = 10.dp),
+                                    textAlign = TextAlign.Start,
+                                )
+                                Text(
+                                    text = tvShow.overview,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    modifier = Modifier
+                                        .wrapContentSize()
+                                        .padding(
+                                            start = 10.dp,
+                                            end = 10.dp,
+                                            top = 15.dp,
+                                            bottom = 15.dp
+                                        ),
+                                    textAlign = TextAlign.Justify,
+                                )
+                            }
+                        }
+
                         item {
                             Text(
-                                text = stringResource(id = R.string.descriptions),
+                                text = stringResource(id = R.string.seasons),
                                 style = MaterialTheme.typography.titleMedium,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(start = 10.dp, end = 10.dp, top = 10.dp),
+                                    .padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 8.dp),
                                 textAlign = TextAlign.Start,
                             )
+                        }
+
+                        items(tvShow.seasons){
                             Text(
-                                text = tvShow.overview,
+                                text = it.name + "  -  Episodes (${it.episodeCount})",
                                 style = MaterialTheme.typography.bodyMedium,
                                 modifier = Modifier
-                                    .wrapContentSize()
+                                    .fillMaxWidth()
                                     .padding(
-                                        start = 10.dp,
-                                        end = 10.dp,
-                                        top = 15.dp,
-                                        bottom = 15.dp
+                                        start = 20.dp,
+                                        end = 20.dp,
+                                        top = 6.dp,
+                                        bottom = 6.dp
                                     ),
                                 textAlign = TextAlign.Justify,
+                            )
+                            Divider(
+                                modifier = Modifier.padding(start = 20.dp, end = 20.dp),
+                                color = Color.Gray,
+                                thickness = 1.dp
                             )
                         }
                     }
 
-                    item {
-                        Text(
-                            text = stringResource(id = R.string.seasons),
-                            style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 8.dp),
-                            textAlign = TextAlign.Start,
-                        )
-                    }
+                    if(similarState.similarTvShows.isNotEmpty()){
+                        item {
+                            Text(
+                                text = stringResource(id = R.string.similar_shows),
+                                style = MaterialTheme.typography.titleMedium,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp, end = 10.dp, top = 26.dp),
+                                textAlign = TextAlign.Start,
+                            )
+                            LazyRow(
+                                modifier = Modifier
+                                    .padding(5.dp).fillMaxWidth()
+                            ) {
+                                items(similarState.similarTvShows) { similarTvShows ->
+                                    SimilarItem(similarTvShows) {
 
-                    items(tvShow.seasons){
-                        Text(
-                            text = it.name + "  -  Episodes (${it.episodeCount})",
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    start = 20.dp,
-                                    end = 20.dp,
-                                    top = 6.dp,
-                                    bottom = 6.dp
-                                ),
-                            textAlign = TextAlign.Justify,
-                        )
-                        Divider(
-                            modifier = Modifier.padding(start = 20.dp, end = 20.dp),
-                            color = Color.Gray,
-                            thickness = 1.dp
-                        )
+                                    }
+                                }
+                            }
+                        }
                     }
-
 
                 }
 
-            }
-            //
+
             if(state.error.isNotBlank()) {
                 Text(
                     text = state.error,
