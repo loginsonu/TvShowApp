@@ -1,10 +1,13 @@
 package com.example.tvshowapp.presentation.tv_show_list
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tvshowapp.common.Resource
+import com.example.tvshowapp.domain.model.TvShow
+import com.example.tvshowapp.domain.use_case.fav_tv_show_use_case.GetFavTvShowsUseCase
 import com.example.tvshowapp.domain.use_case.get_tv_shows.GetTvShowsUseCase
 import com.example.tvshowapp.domain.use_case.search_tv_show_use_case.GetTvShowsSearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,11 +20,16 @@ import javax.inject.Inject
 @HiltViewModel
 class TvShowListViewModel @Inject constructor(
     private val getTvShowsUseCase: GetTvShowsUseCase,
-    private val getTvShowsSearchUseCase: GetTvShowsSearchUseCase
+    private val getTvShowsSearchUseCase: GetTvShowsSearchUseCase,
+    private val getFavTvShowsUseCase: GetFavTvShowsUseCase
 ) : ViewModel() {
 
     private val _state = mutableStateOf(TvShowListState())
     val state: State<TvShowListState> = _state
+
+    private val _stateFav = mutableStateOf(FavTvShowState())
+    val stateFav: State<FavTvShowState> = _stateFav
+
 
     init {
         getTvShows()
@@ -100,5 +108,24 @@ class TvShowListViewModel @Inject constructor(
             stateSearchText="",
             isSearch = false
         )
+    }
+
+     fun getFavTvShows(){
+        getFavTvShowsUseCase().onEach { result->
+            when (result) {
+                is Resource.Success -> {
+                    _stateFav.value = stateFav.value.copy(
+                        favTvShows = result.data?: emptyList()
+                    )
+                }
+                is Resource.Error -> {
+                   Log.e("dbError",result.message?:"An unexpected error occured")
+                }
+
+                else ->{
+
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 }

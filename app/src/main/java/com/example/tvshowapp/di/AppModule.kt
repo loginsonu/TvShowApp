@@ -1,12 +1,15 @@
 package com.example.tvshowapp.di
 
+import android.content.Context
 import com.example.tvshowapp.common.Constants
+import com.example.tvshowapp.data.localdb.AppDatabase
 import com.example.tvshowapp.data.remote.TvShowApi
 import com.example.tvshowapp.data.repository.TvShowRepositoryImpl
 import com.example.tvshowapp.domain.repository.TvShowRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -36,9 +39,18 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideTvShowRepository(api: TvShowApi): TvShowRepository {
-        return TvShowRepositoryImpl(api)
+    fun provideAppData(
+        @ApplicationContext context: Context,
+    ): AppDatabase {
+        return AppDatabase.invoke(context)
     }
+
+    @Provides
+    @Singleton
+    fun provideTvShowRepository(api: TvShowApi,db: AppDatabase): TvShowRepository {
+        return TvShowRepositoryImpl(api, db)
+    }
+
 
 }
 

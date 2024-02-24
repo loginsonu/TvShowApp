@@ -1,5 +1,6 @@
 package com.example.tvshowapp.presentation.tv_show_list
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -25,11 +26,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -48,7 +52,23 @@ fun TvShowListScreen(
     viewModel: TvShowListViewModel = hiltViewModel()
 ){
     val state = viewModel.state.value
+    val favState = viewModel.stateFav.value
     val searchHistory = remember { mutableStateListOf<String>() }
+
+    val listener = remember {
+        NavController.OnDestinationChangedListener { _, destination, _ ->
+           if(destination.route.toString()==Screen.TvShowListScreen.route){
+               viewModel.getFavTvShows()
+           }
+        }
+    }
+    DisposableEffect(Unit){
+        navController.addOnDestinationChangedListener(listener)
+        onDispose {
+            navController.removeOnDestinationChangedListener(listener)
+        }
+    }
+
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -84,10 +104,15 @@ fun TvShowListScreen(
                 columns = GridCells.Fixed(2)
             ){
                 items(state.tvShows){tvShow->
+                    var isFav = false
+                    if(favState.favTvShows.contains(tvShow)){
+                        isFav = true
+                    }
                     TvShowListItem(
-                        tvShow = tvShow
+                        tvShow = tvShow,
+                        isFav
                     ){
-                        navController.navigate(Screen.TvShowDetailScreen.route + "/${tvShow.id}")
+                        navController.navigate(Screen.TvShowDetailScreen.route + "/${tvShow.id}"+"/${isFav}")
                     }
                 }
             }
@@ -148,7 +173,9 @@ fun TvShowListScreen(
                     searchHistory.forEach {
                         Row(modifier = Modifier.padding(all = 14.dp)) {
                             Image(
-                                modifier = Modifier.size(24.dp).padding(end = 10.dp),
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .padding(end = 10.dp),
                                 painter = painterResource(id = R.drawable.history),
                                 contentDescription = stringResource(id = R.string.history) )
                             Text(text = it)

@@ -1,6 +1,7 @@
 package com.example.tvshowapp.presentation.tv_show_list_details
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,6 +40,7 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.tvshowapp.R
 import com.example.tvshowapp.common.Constants
+import com.example.tvshowapp.domain.model.TvShow
 import com.example.tvshowapp.presentation.Screen
 import com.example.tvshowapp.presentation.tv_show_list.TvShowListViewModel
 import com.example.tvshowapp.presentation.tv_show_list_details.components.SimilarItem
@@ -77,8 +79,30 @@ fun TvShowDetailScreen(
                 actions = {
 
                     Image(
+                        modifier = Modifier
+                            .padding(5.dp)
+                            .clickable {
+                                state.tvShowsDetails?.let {
+                                    val tvShow = TvShow(
+                                        id = state.tvShowsDetails.id,
+                                        name = state.tvShowsDetails.name,
+                                        posterPath = state.tvShowsDetails.posterPath)
+                                    if(state.showFavSelected)
+                                        viewModel.removeFavTvShow(tvShow)
+                                    else
+                                        viewModel.saveFavTvShow(tvShow)
+
+
+                                   }
+                               }
+                        ,
                         painter = painterResource(id = R.drawable.baseline_stars_24),
-                        contentDescription = "Fav"
+                        contentDescription = "Fav",
+                        colorFilter =
+                        if(state.showFavSelected)
+                        ColorFilter.tint(Color.Green)
+                        else
+                         ColorFilter.tint(Color.Black)
                     )
 
                 }

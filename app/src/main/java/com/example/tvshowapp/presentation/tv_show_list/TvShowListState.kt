@@ -10,3 +10,7 @@ data class TvShowListState(
     val isSearch : Boolean =false,
     val stateSearchText : String =""
 )
+
+data class FavTvShowState(
+    val favTvShows: List<TvShow> = emptyList()
+)

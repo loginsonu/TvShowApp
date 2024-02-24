@@ -50,7 +50,7 @@ fun TvShowApp(){
             TvShowListScreen(navController)
         }
         composable(
-            route = Screen.TvShowDetailScreen.route + "/{id}"
+            route = Screen.TvShowDetailScreen.route + "/{id}"+"/{fav}"
         ) {
             TvShowDetailScreen(navController)
         }

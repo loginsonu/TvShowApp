@@ -42,6 +42,7 @@ import com.example.tvshowapp.presentation.ui.theme.TVShowAppTheme
 @Composable
 fun TvShowListItem(
     tvShow: TvShow,
+    isFav:Boolean=false,
     onItemClick: (TvShow)->Unit
 ){
     Card(
@@ -98,15 +99,19 @@ fun TvShowListItem(
                 style = TextStyle(fontSize = 12.sp, textAlign = TextAlign.Start)
             )
 
-            Image(
-                modifier = Modifier.constrainAs(fav){
-                    top.linkTo(image.top,2.dp)
-                    end.linkTo(parent.end,2.dp)
-                },
-                painter = painterResource(id = R.drawable.baseline_stars_24),
-                contentDescription = "Fav",
-                colorFilter = ColorFilter.tint(Color.Green)
-            )
+
+            if(isFav){
+                Image(
+                    modifier = Modifier.constrainAs(fav){
+                        top.linkTo(image.top,2.dp)
+                        end.linkTo(parent.end,2.dp)
+                    },
+                    painter = painterResource(id = R.drawable.baseline_stars_24),
+                    contentDescription = "Fav",
+                    colorFilter = ColorFilter.tint(Color.Green)
+                )
+            }
+
 
         }
     }
