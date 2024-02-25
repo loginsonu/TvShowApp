@@ -6,12 +6,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tvshowapp.common.Resource
-import com.example.tvshowapp.domain.model.TvShow
 import com.example.tvshowapp.domain.use_case.fav_tv_show_use_case.GetFavTvShowsUseCase
 import com.example.tvshowapp.domain.use_case.get_tv_shows.GetTvShowsUseCase
 import com.example.tvshowapp.domain.use_case.search_tv_show_use_case.GetTvShowsSearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch

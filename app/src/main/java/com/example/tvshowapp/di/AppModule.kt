@@ -51,7 +51,6 @@ object AppModule {
         return TvShowRepositoryImpl(api, db)
     }
 
-
 }
 
 

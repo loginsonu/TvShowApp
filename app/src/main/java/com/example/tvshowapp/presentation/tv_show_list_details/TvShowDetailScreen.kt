@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -27,6 +28,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
@@ -40,6 +42,7 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.tvshowapp.R
 import com.example.tvshowapp.common.Constants
+import com.example.tvshowapp.data.localdb.TvShowFav
 import com.example.tvshowapp.domain.model.TvShow
 import com.example.tvshowapp.presentation.Screen
 import com.example.tvshowapp.presentation.tv_show_list.TvShowListViewModel
@@ -81,9 +84,10 @@ fun TvShowDetailScreen(
                         Image(
                             modifier = Modifier
                                 .padding(5.dp)
+                                .clip(CircleShape)
                                 .clickable {
                                     state.tvShowsDetails?.let {
-                                        val tvShow = TvShow(
+                                        val tvShow = TvShowFav(
                                             id = state.tvShowsDetails.id,
                                             name = state.tvShowsDetails.name,
                                             posterPath = state.tvShowsDetails.posterPath)

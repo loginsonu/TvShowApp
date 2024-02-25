@@ -13,11 +13,21 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface AppDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addFavTvShow(tvShow: TvShow) : Long
+    suspend fun addFavTvShow(tvShow: TvShowFav) : Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addTvShowList(tvShow: List<TvShow>) : Array<Long>
+
+    @Query("Delete from TvShow")
+    suspend fun deleteTvShowList()
+
+    @Query("SELECT * from TvShowFav")
+    suspend fun tvShowList(): List<TvShowFav>
+
+    @Query("Delete from TvShowFav where id=:id")
+    suspend fun removeFavShow(id: Int)
 
     @Query("SELECT * from TvShow")
-    suspend fun tvShowList(): List<TvShow>
+    suspend fun getListTvShow():List<TvShow>
 
-    @Query("Delete from TvShow where id=:id")
-    suspend fun removeFavShow(id: Int)
 }

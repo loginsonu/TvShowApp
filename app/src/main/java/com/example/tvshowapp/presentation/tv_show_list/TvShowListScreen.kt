@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.tvshowapp.R
+import com.example.tvshowapp.data.localdb.TvShowFav
 import com.example.tvshowapp.presentation.Screen
 import com.example.tvshowapp.presentation.tv_show_list.components.TvShowListItem
 
@@ -105,7 +106,11 @@ fun TvShowListScreen(
             ){
                 items(state.tvShows){tvShow->
                     var isFav = false
-                    if(favState.favTvShows.contains(tvShow)){
+                    val temp = TvShowFav(
+                        id = tvShow.id,
+                        name = tvShow.name,
+                        posterPath = tvShow.posterPath)
+                    if(favState.favTvShows.contains(temp)){
                         isFav = true
                     }
                     TvShowListItem(

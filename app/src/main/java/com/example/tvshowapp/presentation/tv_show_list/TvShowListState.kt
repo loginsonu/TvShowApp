@@ -1,5 +1,6 @@
 package com.example.tvshowapp.presentation.tv_show_list
 
+import com.example.tvshowapp.data.localdb.TvShowFav
 import com.example.tvshowapp.domain.model.TvShow
 
 
@@ -12,5 +13,5 @@ data class TvShowListState(
 )
 
 data class FavTvShowState(
-    val favTvShows: List<TvShow> = emptyList()
+    val favTvShows: List<TvShowFav> = emptyList()
 )

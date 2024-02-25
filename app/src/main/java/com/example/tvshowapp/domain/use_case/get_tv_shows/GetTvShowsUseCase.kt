@@ -27,6 +27,11 @@ class GetTvShowsUseCase @Inject constructor(
             emit(Resource.Error<List<TvShow>>(e.localizedMessage ?: "An unexpected error occurred"))
         } catch(e: IOException) {
             emit(Resource.Error<List<TvShow>>("Couldn't reach server. Check your internet connection."))
+            //here we can get data from local database
+            val getTvShowLocal = repository.getTvShowFromLocaldb()
+            if(getTvShowLocal.isNotEmpty())
+            emit(Resource.Success<List<TvShow>>(getTvShowLocal))
+
         }catch (e: Exception){
             emit(Resource.Error<List<TvShow>>("Something Went Wrong"))
         }

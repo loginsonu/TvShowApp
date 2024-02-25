@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tvshowapp.common.Constants
 import com.example.tvshowapp.common.Resource
+import com.example.tvshowapp.data.localdb.TvShowFav
 import com.example.tvshowapp.domain.model.TvShow
 import com.example.tvshowapp.domain.use_case.fav_tv_show_use_case.RemoveFavTvShowUseCase
 import com.example.tvshowapp.domain.use_case.fav_tv_show_use_case.SaveFavTvShowUseCase
@@ -97,7 +98,7 @@ class TvShowDetailsViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun saveFavTvShow(tvShow: TvShow){
+    fun saveFavTvShow(tvShow: TvShowFav){
         viewModelScope.launch(Dispatchers.IO) {
             saveFavTvShowUseCase.invoke(tvShow)
             _state.value = state.value.copy(
@@ -107,7 +108,7 @@ class TvShowDetailsViewModel @Inject constructor(
 
     }
 
-    fun removeFavTvShow(tvShow: TvShow){
+    fun removeFavTvShow(tvShow: TvShowFav){
         viewModelScope.launch(Dispatchers.IO) {
             removeFavTvShowUseCase.invoke(tvShow)
             _state.value = state.value.copy(

@@ -1,6 +1,7 @@
 package com.example.tvshowapp.domain.repository
 
 
+import com.example.tvshowapp.data.localdb.TvShowFav
 import com.example.tvshowapp.data.remote.dto.details_tv_shows_dto.DetailsTvShowDto
 import com.example.tvshowapp.data.remote.dto.tv_show_dto.TvShowDto
 import com.example.tvshowapp.domain.model.TvShow
@@ -16,9 +17,11 @@ interface TvShowRepository {
 
     suspend fun getSimilarTvShows(id:Int):TvShowDto
 
-    suspend fun saveFavShow(tvShow: TvShow)
+    suspend fun saveFavShow(tvShow: TvShowFav)
 
     suspend fun removeFavShow(id: Int)
 
-    suspend fun getFavShowList(): List<TvShow>
+    suspend fun getFavShowList(): List<TvShowFav>
+
+    suspend fun getTvShowFromLocaldb(): List<TvShow>
 }

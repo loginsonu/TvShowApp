@@ -4,14 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import com.example.tvshowapp.common.Constants
 import com.example.tvshowapp.domain.model.TvShow
 import retrofit2.Converter
 
 
 @Database(
-    entities = [TvShow::class] ,
+    entities = [TvShowFav::class,TvShow::class] ,
     version = 1,
     exportSchema = false
 )
