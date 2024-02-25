@@ -77,6 +77,7 @@ dependencies {
     //Retrofit and Gson
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0")
 
     //constraintLayout
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
@@ -90,5 +91,15 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
 
     implementation("androidx.navigation:navigation-compose:2.7.7")
+
+    // JVM Testing dependencies
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation("app.cash.turbine:turbine:0.11.0")
+    testImplementation("com.google.truth:truth:1.1.4")
+    testImplementation("io.mockk:mockk:1.10.5")
+    testImplementation("com.squareup.okhttp3:mockwebserver:5.0.0-alpha.3")
+
 
 }
