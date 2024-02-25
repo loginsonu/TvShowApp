@@ -7,5 +7,6 @@ data class TvShowDetailsState(
     val isLoading: Boolean = false,
     val tvShowsDetails: TvShowDetails? =null,
     val error: String = "",
-    val showFavSelected: Boolean = false
+    val showFavSelected: Boolean = false,
+    val hideFav:Boolean = false
 )

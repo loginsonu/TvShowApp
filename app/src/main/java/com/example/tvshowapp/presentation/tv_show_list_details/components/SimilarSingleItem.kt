@@ -22,14 +22,14 @@ import com.example.tvshowapp.common.Constants
 import com.example.tvshowapp.domain.model.TvShow
 
 @Composable
-fun SimilarItem(tvShow: TvShow, onItemClick: () -> Unit){
+fun SimilarItem(tvShow: TvShow, onItemClick: (TvShow) -> Unit){
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = Modifier
             .padding(5.dp)
             .size(120.dp)
             .clickable {
-                onItemClick()
+                onItemClick(tvShow)
             },
         elevation = CardDefaults.cardElevation(
             defaultElevation = 8.dp

@@ -42,6 +42,7 @@ class TvShowDetailsViewModel @Inject constructor(
     val stateSimilar: State<SimilarTvShowState> = _stateSimilar
 
     private var showFav = false
+    private var hideFav = false
 
     init {
         savedStateHandle.get<String>(Constants.PARAM_TV_SHOW_ID)?.let { id ->
@@ -52,6 +53,8 @@ class TvShowDetailsViewModel @Inject constructor(
         savedStateHandle.get<String>(Constants.PARAM_FAV_TV_SHOW)?.let { fav ->
            if(fav=="true"){
                showFav=true
+           }else if(fav=="other"){
+               hideFav = true
            }
         }
     }
@@ -59,12 +62,11 @@ class TvShowDetailsViewModel @Inject constructor(
         getTvShowsDetailsUseCase(id).onEach { result ->
             when (result) {
                 is Resource.Success -> {
-                    if(showFav)
+
                     _state.value = TvShowDetailsState(
                         tvShowsDetails = result.data,
-                        showFavSelected = true)
-                    else
-                        _state.value = TvShowDetailsState(tvShowsDetails = result.data)
+                        showFavSelected = showFav, hideFav = hideFav)
+
 
                 }
                 is Resource.Error -> {

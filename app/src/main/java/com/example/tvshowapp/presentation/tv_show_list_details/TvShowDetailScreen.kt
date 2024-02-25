@@ -77,33 +77,35 @@ fun TvShowDetailScreen(
 
                 },
                 actions = {
+                    if(!state.hideFav){
+                        Image(
+                            modifier = Modifier
+                                .padding(5.dp)
+                                .clickable {
+                                    state.tvShowsDetails?.let {
+                                        val tvShow = TvShow(
+                                            id = state.tvShowsDetails.id,
+                                            name = state.tvShowsDetails.name,
+                                            posterPath = state.tvShowsDetails.posterPath)
+                                        if(state.showFavSelected)
+                                            viewModel.removeFavTvShow(tvShow)
+                                        else
+                                            viewModel.saveFavTvShow(tvShow)
 
-                    Image(
-                        modifier = Modifier
-                            .padding(5.dp)
-                            .clickable {
-                                state.tvShowsDetails?.let {
-                                    val tvShow = TvShow(
-                                        id = state.tvShowsDetails.id,
-                                        name = state.tvShowsDetails.name,
-                                        posterPath = state.tvShowsDetails.posterPath)
-                                    if(state.showFavSelected)
-                                        viewModel.removeFavTvShow(tvShow)
-                                    else
-                                        viewModel.saveFavTvShow(tvShow)
 
+                                    }
+                                }
+                            ,
+                            painter = painterResource(id = R.drawable.baseline_stars_24),
+                            contentDescription = "Fav",
+                            colorFilter =
+                            if(state.showFavSelected)
+                                ColorFilter.tint(Color.Green)
+                            else
+                                ColorFilter.tint(Color.Black)
+                        )
 
-                                   }
-                               }
-                        ,
-                        painter = painterResource(id = R.drawable.baseline_stars_24),
-                        contentDescription = "Fav",
-                        colorFilter =
-                        if(state.showFavSelected)
-                        ColorFilter.tint(Color.Green)
-                        else
-                         ColorFilter.tint(Color.Black)
-                    )
+                    }
 
                 }
             )
@@ -206,8 +208,8 @@ fun TvShowDetailScreen(
                                     .padding(5.dp).fillMaxWidth()
                             ) {
                                 items(similarState.similarTvShows) { similarTvShows ->
-                                    SimilarItem(similarTvShows) {
-
+                                    SimilarItem(similarTvShows) {tvShow->
+                                        navController.navigate(Screen.TvShowDetailScreen.route + "/${tvShow.id}/other")
                                     }
                                 }
                             }
