@@ -3,6 +3,9 @@ package com.example.tvshowapp.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -44,13 +47,33 @@ fun TvShowApp(){
         navController = navController,
         startDestination = Screen.TvShowListScreen.route
     ) {
-        composable(
-            route = Screen.TvShowListScreen.route
-        ) {
+
+        composable(route = Screen.TvShowListScreen.route, enterTransition = {
+            return@composable fadeIn(tween(1000))
+        }, exitTransition = {
+            return@composable slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Start, tween(700)
+            )
+        }, popEnterTransition = {
+            return@composable slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.End, tween(700)
+            )
+        }) {
             TvShowListScreen(navController)
         }
+
         composable(
-            route = Screen.TvShowDetailScreen.route + "/{id}"+"/{fav}"
+            route = Screen.TvShowDetailScreen.route + "/{id}"+"/{fav}",
+            enterTransition = {
+                return@composable slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Start, tween(700)
+                )
+            },
+            popExitTransition = {
+                return@composable slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.End, tween(700)
+                )
+            },
         ) {
             TvShowDetailScreen(navController)
         }
